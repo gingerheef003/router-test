@@ -4,11 +4,19 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Root from './routes/root';
+import ErrorPage from "./routes/error-page"
+import Contact from './routes/contact';
 
 const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <div>Hello World</div>
+		element: <Root />,
+		errorElement: <ErrorPage />
+	},
+	{
+		path: "contacts/:contactId",
+		element: <Contact />
 	}
 ])
 
