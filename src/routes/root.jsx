@@ -1,4 +1,5 @@
 import React from "react"
+import { Link, Outlet } from "react-router-dom"
 import "../styles/root.css"
 
 export default function Root() {
@@ -32,15 +33,17 @@ export default function Root() {
 				<nav>
 					<ul>
 						<li>
-							<a href={`/contacts/1`}>Ginger</a>
+							<Link to={`/contacts/1`}>Ginger</Link>
 						</li>
 						<li>
-							<a href={`/contacts/2`}>Ginger Friend</a>
+							<Link to={`/contacts/2`}>Ginger Friend</Link>
 						</li>
 					</ul>
 				</nav>
 			</div>
-			<div id="detail"></div>
+			<div id="detail">
+				<Outlet />
+			</div>
 		</>
 	)
 }
