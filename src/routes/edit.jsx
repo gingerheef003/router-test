@@ -22,6 +22,7 @@ export default function EditContact() {
 					type={"text"}
 					name="first"
 					defaultValue={contact.first}
+					autoFocus
 				/>
 				<input
 					placeholder="Last"

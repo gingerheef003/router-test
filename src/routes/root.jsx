@@ -1,5 +1,5 @@
-import React from "react"
-import { Form, Link, NavLink, Outlet, redirect, useLoaderData, useNavigation } from "react-router-dom"
+import React, { useEffect } from "react"
+import { Form, Link, NavLink, Outlet, redirect, useLoaderData, useNavigation, useSubmit } from "react-router-dom"
 import "../styles/root.css"
 import { createContact, getContacts } from "../contacts"
 
@@ -7,7 +7,7 @@ export async function loader({ request }) {
 	const url = new URL(request.url);
 	const q = url.searchParams.get("q");
 	const contacts = await getContacts(q);
-	return { contacts };
+	return { contacts, q };
 }
 
 export async function action() {
@@ -17,8 +17,17 @@ export async function action() {
 
 export default function Root() {
 
-	const { contacts } = useLoaderData();
+	const { contacts, q } = useLoaderData();
 	const navigation = useNavigation();
+	const submit = useSubmit();
+
+	const searching = navigation.location && new URLSearchParams(navigation.location.search).has(
+		"q"
+	)
+
+	useEffect(() => {
+		document.getElementById("q").value = q;
+	}, [q]);
 
 	return (
 		<>
@@ -29,14 +38,22 @@ export default function Root() {
 						<input
 							id="q"
 							aria-label="Search contacts"
+							className={searching ? "loading" : ""}
 							placeholder="Search"
 							type={"search"}
 							name="q"
+							defaultValue={q}
+							onChange={e => {
+								const isFirst = q == null;
+								submit(e.currentTarget.form, {
+									replace: !isFirst,
+								})
+							}}
 						/>
 						<div
 							id="search-spinner"
 							aria-hidden
-							hidden={true}
+							hidden={!searching}
 						/>
 						<div
 							className="sr-only"
